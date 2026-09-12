@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="app-header">
+            <h1>Study Planner</h1>
+            <p class="subtitle">Keep track of what you want to learn next.</p>
+        </header>
+
+        <section class="panel" aria-labelledby="add-task-heading">
+            <h2 id="add-task-heading">Add a study task</h2>
+
+            <form id="task-form" class="task-form">
+                <div class="field">
+                    <label for="task-title">Task</label>
+                    <input
+                        id="task-title"
+                        name="title"
+                        type="text"
+                        placeholder="e.g. Practice JavaScript arrays"
+                        maxlength="120"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="task-subject">Subject</label>
+                    <select id="task-subject" name="subject" required>
+                        <option value="">Choose a subject</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Python">Python</option>
+                        <option value="Git & GitHub">Git & GitHub</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="primary-button">Add task</button>
+            </form>
+
+            <p id="form-error" class="form-error" role="alert" aria-live="polite"></p>
+        </section>
+
+        <section class="planner-grid">
+            <section class="panel" aria-labelledby="open-tasks-heading">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Up next</p>
+                        <h2 id="open-tasks-heading">To study</h2>
+                    </div>
+                    <span id="open-count" class="count-badge">0</span>
+                </div>
+
+                <ul id="open-task-list" class="task-list"></ul>
+                <p id="open-empty-state" class="empty-state">
+                    Nothing here yet. Add your first study task.
+                </p>
+            </section>
+
+            <section class="panel" aria-labelledby="completed-tasks-heading">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Progress</p>
+                        <h2 id="completed-tasks-heading">Completed</h2>
+                    </div>
+                    <span id="completed-count" class="count-badge">0</span>
+                </div>
+
+                <ul id="completed-task-list" class="task-list"></ul>
+                <p id="completed-empty-state" class="empty-state">
+                    Completed tasks will appear here.
+                </p>
+            </section>
+        </section>
+    </main>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

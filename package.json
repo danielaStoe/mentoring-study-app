@@ -1,0 +1,7 @@
+{
+  "name": "study-planner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A vanilla JavaScript study planner used for mentoring and Git/GitHub workflow practice.",
+  "type": "module"
+}
