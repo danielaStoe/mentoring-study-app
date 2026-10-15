@@ -1,6 +1,6 @@
 # Study Planner
 
-A small vanilla JavaScript project for learning software-development fundamentals and practicing a complete Git/GitHub workflow with Claude Code.
+A small study planner with a vanilla JavaScript browser interface, a Python Flask API, and MongoDB storage.
 
 ## Current features
 
@@ -9,8 +9,9 @@ A small vanilla JavaScript project for learning software-development fundamental
 - Mark a task as completed or open
 - Delete a task
 - Separate open and completed tasks
+- Store tasks in MongoDB so they survive refreshes
 
-The starter version intentionally **does not** include priorities, due dates, persistence, or automated tests. Those are intended to be added through later GitHub issues and pull requests.
+The app does not include priorities, due dates, user accounts, or automated tests yet.
 
 ## Architecture
 
@@ -23,6 +24,8 @@ src/
 ├── ui/
 │   └── StudyPlannerApp.js
 └── main.js
+app.py
+requirements.txt
 ```
 
 ### `StudyTask`
@@ -41,23 +44,33 @@ Connects the application logic to the browser DOM, handles user interaction, and
 
 Creates the objects and starts the application.
 
+### `app.py`
+
+Serves the browser app and provides the task API backed by the MongoDB `mentor_study_app` database.
+
 ## Run locally
 
-Because the project uses JavaScript modules, serve it through a local web server instead of opening `index.html` directly.
-
-If you use VS Code, the **Live Server** extension is an easy option.
-
-Or, if Python is installed:
+Create and activate a Python virtual environment, then install the backend dependencies:
 
 ```bash
-python -m http.server 5500
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-Then open:
+On Windows, activate the environment with `.venv\\Scripts\\activate` instead. Copy `.env.example` to `.env` and replace the `MONGODB_URI` placeholders with the connection string from MongoDB Atlas. Keep `.env` private; it is ignored by Git.
+
+```bash
+python app.py
+```
+
+Open the app at:
 
 ```text
 http://localhost:5500
 ```
+
+In Atlas, make sure your IP address is allowed under Network Access and that the database user in the connection string has permission to read and write the database.
 
 ## Suggested learning roadmap
 
@@ -69,11 +82,7 @@ Add `low`, `medium`, and `high` priorities to study tasks.
 
 Allow tasks to optionally have a due date.
 
-### Issue 3 — Add persistence
-
-Store tasks in `localStorage` so they survive a page refresh.
-
-### Issue 4 — Filtering and sorting
+### Next — Filtering and sorting
 
 Filter by subject/status and sort by priority or due date.
 

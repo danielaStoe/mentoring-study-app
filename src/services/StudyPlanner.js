@@ -42,4 +42,5 @@ export class StudyPlanner {
     getCompletedTasks() {
         return this.tasks.filter(task => task.completed);
     }
+
 }
