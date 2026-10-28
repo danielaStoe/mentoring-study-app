@@ -70,7 +70,7 @@ button {
 
 .task-form {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr) auto;
+    grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr) auto auto;
     gap: 1rem;
     align-items: end;
 }
@@ -113,8 +113,22 @@ button {
     font-weight: 800;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 .primary-button:hover {
     background: #4338ca;
+}
+
+.secondary-button {
+    align-self: end;
+    padding: 0.78rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.65rem;
+    background: white;
+    color: #374151;
+    font-weight: 700;
 }
 
 .form-error {
@@ -210,8 +224,18 @@ button {
 }
 
 .icon-button:hover {
-    background: #fee2e2;
-    color: #b91c1c;
+   background: #eef2ff;
+   color: #4338ca;
+}
+
+.task-actions {
+   display: flex;
+   gap: 0.4rem;
+}
+
+.delete-button:hover {
+   background: #fee2e2;
+   color: #b91c1c;
 }
 
 .empty-state {
@@ -225,7 +249,8 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .primary-button {
+    .primary-button,
+    .secondary-button {
         width: 100%;
     }
 }

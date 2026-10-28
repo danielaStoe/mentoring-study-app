@@ -6,6 +6,10 @@ export class StudyPlannerApp {
         this.titleInput = document.querySelector("#task-title");
         this.subjectInput = document.querySelector("#task-subject");
         this.formError = document.querySelector("#form-error");
+        this.formHeading = document.querySelector("#add-task-heading");
+        this.submitButton = this.form.querySelector("button[type='submit']");
+        this.cancelButton = document.querySelector("#cancel-edit-button");
+        this.editingTaskId = null;
 
         this.openTaskList = document.querySelector("#open-task-list");
         this.completedTaskList = document.querySelector("#completed-task-list");
@@ -21,6 +25,7 @@ export class StudyPlannerApp {
         this.form.addEventListener("submit", event => this.handleSubmit(event));
         this.openTaskList.addEventListener("click", event => this.handleTaskAction(event));
         this.completedTaskList.addEventListener("click", event => this.handleTaskAction(event));
+        this.cancelButton.addEventListener("click", () => this.stopEditing());
 
         this.render();
     }
@@ -30,9 +35,14 @@ export class StudyPlannerApp {
         this.clearError();
 
         try {
-            this.planner.addTask(this.titleInput.value, this.subjectInput.value);
-            this.form.reset();
-            this.titleInput.focus();
+            if (this.editingTaskId) {
+                this.planner.updateTask(this.editingTaskId, this.titleInput.value, this.subjectInput.value);
+                this.stopEditing();
+            } else {
+                this.planner.addTask(this.titleInput.value, this.subjectInput.value);
+                this.form.reset();
+                this.titleInput.focus();
+            }
             this.render();
         } catch (error) {
             this.showError(error.message);
@@ -51,6 +61,10 @@ export class StudyPlannerApp {
         try {
             if (event.target.matches("[data-action='toggle']")) {
                 this.planner.toggleTask(taskId);
+            }
+
+            if (event.target.matches("[data-action='edit']")) {
+                this.startEditing(taskId);
             }
 
             if (event.target.matches("[data-action='delete']")) {
@@ -110,16 +124,54 @@ export class StudyPlannerApp {
 
         taskMain.append(title, subject);
 
+        const actions = document.createElement("div");
+        actions.className = "task-actions";
+
+        const editButton = document.createElement("button");
+        editButton.className = "icon-button";
+        editButton.type = "button";
+        editButton.dataset.action = "edit";
+        editButton.textContent = "Edit";
+        editButton.setAttribute("aria-label", `Edit ${task.title}`);
+
         const deleteButton = document.createElement("button");
-        deleteButton.className = "icon-button";
+        deleteButton.className = "icon-button delete-button";
         deleteButton.type = "button";
         deleteButton.dataset.action = "delete";
         deleteButton.textContent = "Delete";
         deleteButton.setAttribute("aria-label", `Delete ${task.title}`);
 
-        item.append(checkbox, taskMain, deleteButton);
+        actions.append(editButton, deleteButton);
+        item.append(checkbox, taskMain, actions);
 
         return item;
+    }
+
+    startEditing(taskId) {
+        const task = this.planner.findTask(taskId);
+
+        if (!task) {
+            return;
+        }
+
+        this.editingTaskId = taskId;
+        this.titleInput.value = task.title;
+        this.subjectInput.value = task.subject;
+        this.formHeading.textContent = "Edit study task";
+        this.submitButton.textContent = "Save changes";
+        this.cancelButton.hidden = false;
+        this.clearError();
+        this.titleInput.focus();
+    }
+
+    stopEditing() {
+        this.editingTaskId = null;
+        this.form.reset();
+        this.formHeading.textContent = "Add a study task";
+        this.submitButton.textContent = "Add task";
+        this.cancelButton.hidden = true;
+        this.clearError();
+        this.render();
     }
 
     showError(message) {
